@@ -1,11 +1,18 @@
 const express = require('express');
+const cors = require('cors');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const bodyParser = require('body-parser');
 // Cheerio lets us manipulate DOM by reading elements on page.
 
 const app = express();
 
-const PORT = process.env.port || 3000;
+app.use(cors());
+// app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false}))
+app.use(bodyParser.json());
+
+// const PORT = process.env.port || 8000;
 
 const website = 'https://thegoodnewshub.com/news/';
 
@@ -27,7 +34,7 @@ try {
                 url,
             });
 
-            app.get('/', (req, res) => {
+            app.get('/items', (req, res) => {
                 res.json(content);
             });
         });
@@ -36,6 +43,12 @@ try {
     console.log(error, error.message);
 }
 
-app.listen(PORT, () => {
-    console.log(`server is running on PORT:${PORT}`);
+// app.use('/', (req, res, next) => {
+//     res.send("test!!!!")
+// });
+
+app.listen(8000, () => {
+    console.log(`server is running on port 8000`);
 });
+
+module.exports = app;
